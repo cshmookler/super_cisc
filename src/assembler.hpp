@@ -1,3 +1,5 @@
+#pragma once
+
 // Standard includes
 #include <cstdint>
 #include <iostream>
@@ -10,17 +12,17 @@ const bool inst = false;
 const bool data = true;
 
 // opcodes
-const byte_t op_mini_isa_2 = 0x00;       // 3 bytes : write data to address at data_2
-const byte_t op_mini_isa_4 = 0x10;       // 4 bytes : write data to address at data_3
-const byte_t op_input = 0x20;            // 1 byte : write one input byte to address 1
-const byte_t op_random = 0x30;           // 1 byte : write one input byte to address 0
+const byte_t op_mini_isa_2 = 0x00; // 3 bytes : write data to address at data_2
+const byte_t op_mini_isa_4 = 0x10; // 4 bytes : write data to address at data_3
+const byte_t op_input = 0x20;      // 1 byte : write one input byte to address 1
+const byte_t op_random = 0x30;     // 1 byte : write one input byte to address 0
 const byte_t op_line_collision = 0x40;   // 3 bytes : write result to data_2 ???
 const byte_t op_point_collision = 0x50;  // 3 bytes : write result to data_2 ???
 const byte_t op_border_collision = 0x60; // 2 bytes : write result to data_1 ???
 const byte_t op_write_to_screen = 0x70;  // 3 bytes : color = d1; pos = *d2;
-const byte_t op_equal_to = 0x80;         // 4 bytes : if (*d1 == *d2) { goto d3; }
-const byte_t op_greater_than = 0x90;     // 4 bytes : if (*d1 > *d2) { goto d3; }
-const byte_t op_big = 0x90;              // Alias of greater than
+const byte_t op_equal_to = 0x80;     // 4 bytes : if (*d1 == *d2) { goto d3; }
+const byte_t op_greater_than = 0x90; // 4 bytes : if (*d1 > *d2) { goto d3; }
+const byte_t op_big = 0x90;          // Alias of greater than
 
 // opcodes for mini 2-ISA
 const byte_t mop2_nop = 0b00;  // nothing
@@ -58,7 +60,7 @@ int assemble(const std::vector<instruction_t>& program) {
             continue;
         }
 
-        if (ins.opcode_1 % 16 == 0) {
+        if (ins.opcode_1 % 16 != 0) {
             std::cerr << "[" << i
                       << "] opcode_1 must be cleanly divisible by 16, but it's "
                          "actually "
@@ -66,7 +68,9 @@ int assemble(const std::vector<instruction_t>& program) {
             return 1;
         }
         if (ins.opcode_2 >= 16) {
-            std::cerr << "[" << i << "] opcode_2 must be <= 15, but it's actually " << ins.opcode_2 << '\n';
+            std::cerr << "[" << i
+                      << "] opcode_2 must be <= 15, but it's actually "
+                      << ins.opcode_2 << '\n';
             return 1;
         }
 
@@ -118,15 +122,4 @@ int assemble(const std::vector<instruction_t>& program) {
     }
 
     return 0;
-}
-
-int main() {
-    std::vector<instruction_t> program{
-        { inst, op_random },
-        { inst, op_random },
-        { inst, op_input },
-        { inst, op_write_to_screen, 0, 123, 0b01101010 },
-    };
-
-    return assemble(program);
 }

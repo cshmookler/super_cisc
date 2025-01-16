@@ -21,10 +21,10 @@ configure_file(
     output : 'version.hpp',
 )
 
-exe_super_cisc = executable(
-    'super_cisc',
+exe_snake = executable(
+    'snake',
     files(
-        src_dir / 'main.cpp',
+        src_dir / 'snake.cpp',
         src_dir / 'version.cpp',
     ),
     install : true,

@@ -74,4 +74,6 @@ meson install
 
 ## **TODO**
 
-- [ ] Start development.
+- [ ] Finish the assembler.
+- [ ] Write the snake program.
+- [ ] Create a virtual machine for simulating this computer and testing programs.
